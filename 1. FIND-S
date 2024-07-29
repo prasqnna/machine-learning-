@@ -1,0 +1,29 @@
+import csv
+
+def find_s_algorithm(filename):
+    with open(filename, 'r') as csvfile:
+        csvreader = csv.reader(csvfile)
+        data = [row for row in csvreader]
+
+    # Initialize the hypothesis
+    hypothesis = ['0'] * (len(data[0]) - 1)  # Initialize with '0' for all attributes except the target
+
+    # Applying FIND-S Algorithm
+    for example in data[1:]:  # Skip the header row
+        if example[-1].strip().lower() == 'yes':  # Check if example is positive
+            for i in range(len(hypothesis)):
+                if hypothesis[i] == '0':
+                    hypothesis[i] = example[i]
+                elif hypothesis[i] != example[i]:
+                    hypothesis[i] = '?'
+
+    return hypothesis
+
+# Example usage:
+filename = '/content/finds_data.csv'
+hypothesis = find_s_algorithm(filename)
+print("The final hypothesis is:", hypothesis)
+
+
+OUTPUT:
+The final hypothesis is: ['Sunny', 'Warm', '?', 'Strong', '?', '?']
